@@ -9,13 +9,22 @@ router.post('/exercise/new-user', function(req, res) {
   let user = new User({ username });
   user.save(function(err, user) {
     if (err) res.json(err);
-    res.redirect(`/api/exercise/user/${user.id}`);
+    res.redirect(`/api/user/${user.id}`);
   });
 });
 
 // Get user
-router.get('/exercise/user/:id', function(req, res) {
+router.get('/user/:id', function(req, res) {
   User.findById(req.params.id, function(err, user) {
+    if (err) res.json(err);
+    res.json(user);
+  });
+});
+
+// Get user with exercises
+router.get('/exercise/user/:id', function(req, res) {
+  let userId = req.params.id;
+  User.findUserWithLogs(userId, function(err, user) {
     if (err) res.json(err);
     res.json(user);
   });
@@ -40,7 +49,7 @@ router.post('/exercise/add', function(req, res) {
   if (date !== '') exercise.date = new Date(date);
   exercise.save(function(err, exercise) {
     if (err) res.json(err);
-    res.redirect(`/api/exercise/${exercise.id}`);
+    res.redirect(`/api/exercise/user/${userId}`);
   });
 });
 
