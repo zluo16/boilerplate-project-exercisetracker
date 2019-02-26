@@ -50,7 +50,16 @@ router.get('/exercise/:id', function(req, res) {
     if (err) res.json(err);
     let { userId, description, duration, date } = exercise;
     res.json({ userId, description, duration, date });
-  })
+  });
+});
+
+// Get exercise log for specific user
+router.get('/exercise/log/:userId', function(req, res) {
+  let { userId } = req.params;
+  Exercise.find({ userId }, function(err, exercises) {
+    if (err) res.json(err);
+    res.json(exercises);
+  });
 });
 
 module.exports = router;
