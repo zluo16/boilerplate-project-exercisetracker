@@ -56,7 +56,8 @@ router.get('/exercise/:id', function(req, res) {
 // Get exercise log for specific user
 router.get('/exercise/log/:userId', function(req, res) {
   let { userId } = req.params;
-  Exercise.find({ userId }, function(err, exercises) {
+  let { from, to, limit } = req.query;
+  Exercise.queryLogs(userId, from, to, limit, function(err, exercises) {
     if (err) res.json(err);
     res.json(exercises);
   });
