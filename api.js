@@ -63,12 +63,15 @@ router.get('/exercise/:id', function(req, res) {
 });
 
 // Get exercise log for specific user
-router.get('/exercise/log/:userId', function(req, res) {
+router.get('/exercise/log/:userId', async function(req, res) {
   let { userId } = req.params;
   let { from, to, limit } = req.query;
-  Exercise.queryLogs(userId, from, to, limit, function(err, exercises) {
+  let total_exercise_count = await Exercise.where({ userId }).countDocuments();
+  let user = await User.findById(userId);
+  let { username } = user;
+  Exercise.queryLogs(userId, from, to, limit, function(err, log) {
     if (err) res.json(err);
-    res.json(exercises);
+    res.json({ userId, username, log, total_exercise_count });
   });
 });
 

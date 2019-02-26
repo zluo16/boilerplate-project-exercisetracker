@@ -15,7 +15,7 @@ exerciseSchema.statics.queryLogs = function(userId, from, to, limit, callback) {
   this.find({
     userId,
     date: { $gte: fromDate, $lt: toDate }
-  }).limit(!!limit ? parseInt(limit) : 0).exec(function(err, exercises) {
+  }).limit(!!limit ? parseInt(limit) : 0).exec((err, exercises) => {
     if (err) callback(err);
     callback(null, exercises);
   });
